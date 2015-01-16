@@ -1,0 +1,95 @@
+Bare Pu cylinder
+c      -----------------------------------------------------------------
+c      R.A.Borrelli
+c      -----------------------------------------------------------------
+c      rev.22.August.2014
+c      -----------------------------------------------------------------
+c
+c      ------------------------- MODEL NOTES ---------------------------
+c
+c      This is an example for a criticality model to be applied to FOM.
+c      The origin is 000.
+c      
+c      ----------------------- END MODEL NOTES -------------------------
+c
+c      -----------------------------------------------------------------
+c
+c      ------------------------- START CARDS ---------------------------
+c
+c      -----------
+c      cell cards
+c      -----------
+c
+c      ---
+100    1 -15.8       -10 11 -12       imp:n=1       $plutonium cylinder
+c      ---
+c
+c      ---
+150    0              10:-11:12       imp:n=0        $void
+c      ---
+c
+c      -----------
+c      end cell cards
+c      -----------
+
+c      -----------
+c      surface cards
+c      -----------
+c
+c      ---
+c      geometry
+c      ---
+10     CZ  4.935     $cylinder radius
+c      ---
+11     PZ  0         $bottom
+c      ---
+12     PZ  17.273    $top
+c      ---
+c      end source geometry
+c      ---
+c
+c      -----------
+c      end surface cards
+c      -----------
+
+c      -----------
+c      data cards
+c      -----------
+c
+c      ---
+MODE   n
+c      ---
+c
+c      ---
+c      end physics
+c      ---
+c
+c      ---
+c      source
+c      ---
+c
+c      ---
+KCODE  1000 1.0 15 115
+KSRC   0 0 8.6
+c      ---
+c
+c      ---
+c      end source
+c      ---
+c
+c      ---
+c      materials
+c      ---
+c
+c      ---
+c      plutonium
+M1     94239.66c 1.0 
+c      ---
+c
+c      ---
+c      end materials
+c      ---
+c
+c      ----------- END CARDS -----------
+c
+c      -----------------------------------------------------------------
