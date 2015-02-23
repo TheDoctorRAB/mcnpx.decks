@@ -1,0 +1,424 @@
+Detection of Cm244 SF neutrons in electrorefiner with salt deck
+c      -----------------------------------------------------------------
+c      R.A.Borrelli
+c      -----------------------------------------------------------------
+c      rev.12.February.2014
+c      -----------------------------------------------------------------
+c      SOURCE:70 kg batch size
+c      -----------------------------------------------------------------
+c
+c      ----------- MODEL NOTES -----------
+c
+c      -----------
+c      MCNP modifications for different batch sizes
+c      -----------
+c      commercial batch size is 20 kg metal, 50 kg salt
+c      70 kg of metal+salt will completely fill the cathode
+c      when changing the modeling mass (2 kg, 2 g, etc.)
+c      then the following must be included
+c      
+c      (1) the cathode will contain alloy+air, so a cylinder of alloy
+c      and a cylinder of Ar is needed
+c      another surface card needs to be added (PZ) corresponding to the 
+c      mass (100+x) where x = the height of the corresponding 
+c      cylinder volume for alloy mass
+c      
+c      (2) another cell card then needs to be added to account for the
+c      Ar in the cathode due to the lesser amount of alloy the Ar
+c      cylinder lies directly *above* the alloy cylinder
+c
+c      (3) in SDEF the POS must be changed to account for the center of
+c      the alloy
+c      this will be .5x, where x is given in (1)
+c
+c      (4) SI2 is changed for the same reason as (3), also .5x
+c      -----------
+c      end MCNP
+c      -----------
+c
+c      -----------
+c      Description
+c      -----------
+c      models neutron flux in electrorefiner hot cell
+c      eutectic salt included
+c      model for electroreduced used fuel in metal form+LiCl-KCl eutectic salt
+c      salt also contains 9 wt% UCl3 to kick start the electrorefining process
+c      different batch sizes are modeled
+c      composition U31.9-TRU0.4-NM0.2-RE0.5-Li0.2-K33.5-Cl33.3 wt%
+c      alloy is a solid metal+salt cylinder
+c      cathode that houses the electroreduced metal+salt is a carbon coated cylinder
+c      carbon is a 5 cm thick closed cylinder
+c      cathode/electroreduced alloy is 'housed' in 'equipment'
+c      equipment is a 5 cm thick steel closed cylinder
+c      hot cell has 'wall thickness' for later shielding calculations
+c      shielding is 30 cm boron frits-baryte
+c      vacuum must be last cell card
+c      cells cannot overlap; these are red dotted lines on the VISED
+c      -----------
+c      end description
+c      -----------
+c
+c      -----------
+c      Assumptions 
+c      -----------
+c      Cm244 SF neutrons in the metal provide 100% of neutrons
+c      pyroprocessing material flow is based on KAERI v2.6.4
+c      hot cell shielding prevents outside detection of neutrons other than Cm244 source
+c      electroreduced metal+salt is homogenously distributed in cathode
+c      Cm/Pu ratio is constant
+c      hot cell is filled with inert Ar atmosphere
+c      cathode size corresponds to full batch size
+c      cathode is 5 cm thick all around
+c      -----------
+c      end assumptions
+c      -----------
+c
+c      -----------
+c      Dimensions and positions
+c      -----------
+c      batch: 21cmR x 21cmH
+c      hot cell: 10mW x 10mH x 20mL
+c      equipment: 2.25mR x 3.5mH
+c      crucible is 1m off the floor
+c      origin:(0,0,0) at center of room on the floor
+c      + x direction is right
+c      + y direction is forward
+c      + z direction is up
+c      source is volumetric isotropic cylinder source on the z axis 
+c      -----------
+c      end dimensions and positions
+c      -----------
+c
+c      ----------------------- END MODEL NOTES -------------------------
+c
+c      -----------------------------------------------------------------
+c
+c      ------------------------- START CARDS ---------------------------
+c
+c      -----------
+c      cell cards
+c      -----------
+c
+c      ---
+c      source hot cell
+c      ---
+100    1 -2.34    -10 11 -12                         imp:n=1                 $eletroreduced-filled cathode
+c      ---
+101    2 -2.23    (10:-11:12) -13 14 -15             imp:n=1                 $carbon cathode coating
+c      ---
+102    3 -0.00178 (13:-14:15) -16 17 -18             imp:n=1                 $Ar content in equipment
+c      ---
+103    4 -7.92    (16:-17:18)  -19 -20 21            imp:n=1                 $steel equipment
+c      ---
+104    3 -0.00178 (19:20:-21) -50 51 -52 53 54 -55   imp:n=1 VOL=1.94183E+09 $rest of SE hot cell
+c      ---
+c      end source hot cell
+c      ---
+c
+c      ---
+c      empty hot cells
+c      ---
+110    3 -0.00178 -52 53 54 -55 -61 70   imp:n=1 $SW hot cell 
+c      ---
+111    3 -0.00178  54 -55 -61 62 70 -72  imp:n=1 $NW hot cell
+c      ---
+112    3 -0.00178 -50 51 54 -55 62 -72   imp:n=1 $NE hot cell
+c      ---
+c      end empty hot cells
+c      ---
+c
+c      ---
+c      facility shielding (comments based on plan view)
+c      ---
+120    5 -3.10  50 -60 63 64 -65 -73   imp:n=1 $shielding right facility wall
+c      ---
+121    5 -3.10  63 64 -65 -70 71 -73   imp:n=1 $shielding left facility wall
+c      ---
+122    5 -3.10 -50 -53 63 64 -65 70    imp:n=1 $shielding back facility wall
+c      ---
+123    5 -3.10 -50 64 -65 70 72 -73    imp:n=1 $shielding front facility wall
+c      ---
+124    5 -3.10 -51 53 61 64 -65 -72    imp:n=1 $shielding middle facility wall
+c      ---
+125    5 -3.10  52 -61 -62 64 -65 70   imp:n=1 $shielding middle left facility wall
+c      ---
+126    5 -3.10 -50 51 52 -62 64 -65    imp:n=1 $shielding middle right facility wall
+c      ---
+127    5 -3.10 -50 51 -52 53 -54 64    imp:n=1 $SE source cell shielding plug
+c      ---
+128    5 -3.10 -50 51 -52 53 55 -65    imp:n=1 $SE source cell shielding cap 
+c      ---
+129    5 -3.10 -52 53 -54 -61 64 70    imp:n=1 $SW source cell shielding plug
+c      ---
+130    5 -3.10 -52 53 55 -61 -65 70    imp:n=1 $SW source cell shielding cap
+c      ---
+131    5 -3.10 -54 -61 62 64 70 -72    imp:n=1 $NW source cell shielding plug
+c      ---
+132    5 -3.10  55 -61 62 -65 70 -72   imp:n=1 $NW source cell shielding cap
+c      ---
+133    5 -3.10 -50 51 -54 62 64 -72    imp:n=1 $NE source cell shielding plug
+c      ---
+134    5 -3.10 -50 51 55 62 -65 -72    imp:n=1 $NE source cell shielding cap
+c      ---
+c      end facility shielding
+c      ---
+c
+c      ---
+150    0        60:-63:-64:65:-71:73   imp:n=0 $outside of hot cell
+c      ---
+c
+c      -----------
+c      end cell cards
+c      -----------
+
+c      -----------
+c      surface cards
+c      -----------
+c
+c      ---
+c      source geometry
+c      ---
+10     CZ  21.21        $electroreduced/cathode radius
+11     PZ  100          $electroreduced/cathode above the floor
+12     PZ  121.21       $electroreduced/cathode height+floor height
+c      ---
+13     CZ  26.21        $5cm thick carbon cathode
+14     PZ  95           $height above floor
+15     PZ  126.21       $top of the cathode 
+c      ---
+16     CZ  225          $radius of Ar content in equipment
+17     PZ  15           $bottom of Ar content in equipment
+18     PZ  355          $top of Ar content in equipment 
+c      ---
+19     CZ  230          $outer shell of equipment
+20     PZ  360          $top shell of equipment
+21     PZ  10           $bottom shell of equipment
+c      ---
+c      end source geometry
+c      ---
+c
+c      ---
+c      facility geometry (see diagram)
+c      ---
+50     PX  500          $NE/SE hot cell right wall 
+51     PX -500          $NE/SE hot cell left wall
+52     PY  1000         $NE shielding back wall/SE hot cell front wall
+53     PY -1000         $SE/SW hot cell back wall
+c      ---
+54     PZ  0            $facility floor
+55     PZ  1000         $facility ceiling
+c      ---
+60     PX  575          $NE/SE shielding right wall
+61     PX -575          $SE shielding left wall/SW hot cell right wall
+62     PY  1075         $SE/SW shielding front wall
+63     PY -1075         $SE/SW shielding back wall
+c      ---
+64     PZ -75           $facility shielding floor
+65     PZ  1075         $facility shielding ceiling
+c      ---
+70     PX -1575         $NW/SW hot cell left wall
+71     PX -1650         $NW/SW shielding left wall
+c      ---
+72     PY  3075         $NW/NE hot cell front wall
+73     PY  3150         $NW/NE shielding front wall
+c      ---
+c      end facility geometry
+c      ---
+c      -----------
+c      end surface cards
+c      -----------
+
+c      -----------
+c      data cards
+c      -----------
+c
+c      ---
+c      physics
+c      ---
+c
+c      ---
+c      MODE is for neutrons
+c      LCA card provides LAHET physics options
+c      Bertini model is not used because it is not installed on berkeleium server
+c      ---
+c
+c      ---
+MODE   n
+c      ---
+c
+c      ---
+c
+c      ---
+c      end physics
+c      ---
+c
+c      ---
+c      source
+c      ---
+c
+c      ---
+SDEF   CEL 100 POS 0 0 110.605 AXS 0 0 1 RAD d1 EXT d2 ERG d3
+SI1    0 21.21                  $source radius
+SI2    10.605                   $position for the source height (+/-)
+SP3    -3 .902523 3.72033       $Cm244 SF watt spectrum
+c      ---
+c
+c      ---
+c      end source
+c      ---
+c
+c      ---
+c      tally
+c      ---
+c
+c      ---
+c      average cell flux
+c      ---
+FC54   NW hot cell
+F54:N  111
+c      ---
+c
+c      ---
+DF0    IU 2 FAC 1 LOG IC 10
+c      ---
+c
+c      ---
+c      end tally
+c      ---
+c
+c      ---
+c      materials
+c      ---
+c
+c      ---
+c      alloy
+M1     3007.66c  -1.985E-03
+       17000.04p -3.333E-01 19000.66c -3.345E-01 
+       39089.66c -2.195E-04 39090.70c -5.097E-08 42095.50c -1.652E-04
+       42096     -1.191E-05 42097     -1.781E-04 42098     -1.874E-04
+       42100     -2.108E-04 43098     -2.216E-09 43099.66c -1.621E-04
+       44099     -5.914E-09 44100     -3.496E-05 44101.50c -1.720E-04
+       44102     -1.807E-04 44104     -1.280E-04 44106     -4.474E-08
+       45102     -3.048E-11 45103.66c -8.949E-05 46104.66c -6.893E-05
+       46105.66c -8.500E-05 46106.66c -9.330E-05 46107     -5.344E-05
+       46108.66c -3.692E-05 46110.66c -1.220E-05 47109.66c -1.664E-05
+       57138.70c -4.784E-08 57139.70c -5.983E-04 58140.70c -6.172E-04
+       58142.70c -5.561E-04 58144.70c -2.621E-08 59141.50c -5.451E-04
+       60142.70c -1.861E-05 60143.50c -3.315E-04 60144.70c -6.988E-04
+       60145.50c -3.108E-04 60146.70c -3.596E-04 60148.50c -1.835E-04
+       60150.70c -8.837E-05 61147.50c -3.543E-06 62147.66c -6.364E-05
+       62148.70c -9.100E-05 62149.66c -1.785E-06 62150.50c -1.640E-04
+       62151.50c -5.883E-06 62152.50c -5.602E-05 62154.70c -2.007E-05
+       63151.66c -4.736E-07 63152.66c -5.889E-09 63153.66c -5.918E-05
+       63154.66c -1.114E-05 63155.66c -2.321E-06 64154.66c -1.526E-05
+       64155.66c -7.106E-06 64156.66c -5.114E-05 64157.66c -8.081E-08
+       64158.66c -1.330E-05 64160.66c -6.887E-07 65159.70c -1.469E-06
+       66160.70c -2.065E-07 66161.70c -2.297E-07 66162.70c -1.887E-07
+       66163.70c -1.862E-07 66164.70c -2.963E-08 67165.66c -1.063E-07
+       68166.70c -3.953E-08 68168.70c -6.066E-09 92234.66c -5.454E-05
+       92235.66c -2.186E-03 92236.66c -2.112E-03 92238.66c -3.149E-01
+       93237.66c -2.553E-04 94238.66c -1.003E-04 94239.66c -1.743E-03
+       94240.66c -8.453E-04 94241.66c -3.300E-04 94242.66c -2.811E-04
+       94244.66c -3.634E-08 95241.66c -2.129E-04 95242.66c -2.283E-07
+       95243.66c -7.407E-05 96243.66c -2.161E-07 96244.66c -2.331E-05
+       96245.66c -1.728E-06 96246.66c -3.002E-07 96247.66c -4.237E-09
+c      ---
+c
+c      ---
+c      carbon
+M2     6000.66c      1
+c      ---                             
+c
+c      ---
+c      argon
+M3     18000.59c     1
+c      ---
+c
+c      ---
+c      equipment: stainless stell 316
+M4     14000.60c -0.010 
+       24000.42c -0.170 25055.66c -0.020 26000.50c -0.655 
+       28000.42c -0.120 42000.42c -0.025  
+c      ---
+c
+c      ---
+c      shielding: boron frits-baryte
+M5     1001.66c  -0.005600
+       5011.66c  -0.010400 8016.66c  -0.338000 9019.66c  -0.002300
+       11023.66c -0.012100 12000.66c -0.002300 13027.66c -0.006400
+       14000.60c -0.033100 16000.66c -0.091500 19000.66c -0.001000
+       20000.66c -0.062600 25055.66c -0.000200 26000.50c -0.021900
+       30000.42c -0.006600 56138.66c -0.401300
+c      ---
+c
+c      ---
+c      radionuclide swapping for missing data tables
+MX1:N  j
+       j     j     j
+       j     j     j
+       42095 42095 42095
+       42095 43099 j
+       44101 44101 j
+       44101 44101 44101
+       45103 j     j
+       j     j     46108
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+       j     j     j
+c      ---
+c
+c      ---
+c      end materials
+c      ---
+c
+c      ---
+c      weight window generators
+c      ---
+WWG    54 100 0 j j j j 0
+WWP:N  5 3 5 0 0
+WWN1:N 5.0000E-01  4.9528E-01  4.8974E-01  4.8973E-01  4.7425E-01
+       5.3039E-04  3.3690E-08  2.6714E-04  1.1993E+00  3.4750E-04
+       2.5258E+00  1.6874E-04  1.9993E-01  6.0241E-05  1.6449E-01
+       4.7048E+00  1.9054E+00  1.5371E-03  1.2816E-03  5.3895E-08
+       6.1024E-08  5.9091E-04  1.7103E-03 -1.0000E+00
+c      ---
+c      output
+c      ---
+PRINT  10 30 38 40 50 110 117 118 120 126 128 160 161 162 170
+PRDMP  1000000 -10
+c      ---
+c      end output
+c      ---
+c
+c      ---
+c      particle history
+c      ---
+NPS    10000000
+c      ---
+c      end history
+c      ---
+c      -----------
+c      end data cards
+c      -----------
+c
+c      ----------- END CARDS -----------
+c
+c      -----------------------------------------------------------------

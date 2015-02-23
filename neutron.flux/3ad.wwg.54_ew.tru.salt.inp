@@ -1,0 +1,394 @@
+Detection of Cm244 SF neutrons in electrowinner deck
+c      -----------------------------------------------------------------
+c      R.A.Borrelli
+c      -----------------------------------------------------------------
+c      rev.12.February.2014
+c      -----------------------------------------------------------------
+c      SOURCE:38.1 kg batch size
+c      -----------------------------------------------------------------
+c
+c      ------------------------- MODEL NOTES ---------------------------
+c
+c      -----------
+c      MCNP modifications for different batch sizes
+c      -----------
+c      commercial batch size is 38.1 kg
+c      38.1 kg of TRU+Salt (from ER) will completely fill the crucible
+c      when changing the modeling mass (2 kg, 2 g, etc.)
+c      the following must be included
+c      
+c      (1) the crucible will contain alloy+air, so a cylinder of alloy
+c      and a cylinder of Ar is needed
+c      another surface card needs to be added (PZ) corresponding to the 
+c      mass (100+x) where x = the height of the corresponding 
+c      cylinder volume for alloy mass
+c      
+c      (2) another cell card then needs to be added to account for the
+c      Ar in the crucible due to the lesser amount of alloy the Ar
+c      cylinder lies directly *above* the alloy cylinder
+c
+c      (3) in SDEF the POS must be changed to account for the center of
+c      the alloy
+c      this will be .5x, where x is given in (1)
+c
+c      (4) SI2 is changed for the same reason as (3), also .5x
+c      -----------
+c      end MCNP
+c      -----------
+c
+c      -----------
+c      Description
+c      -----------
+c      models neutron flux in electrowinning machine
+c      different batch sizes are modeled
+c      neutron source is a TRU+Salt mixture
+c      U0.29-TRU0.71-RE0.93-Li0.28-K48.6-Cl49.2 wt%
+c      alloy is a solid TRU+Salt cylinder
+c      crucible that houses the metal alloy is an aluminum coated 
+c      cylinder
+c      aluminum is a 5 cm thick open (top) cylinder
+c      crucible/TRU+Salt mixture is 'housed' in 'equipment'
+c      equipment is a 5 cm thick steel closed cylinder
+c      hot cell has 'wall thickness' for later shielding calculations
+c      shielding is 30 cm boron frits-baryte
+c      vacuum must be last cell card
+c      cells cannot overlap; these are red dotted lines on the VISED
+c      -----------
+c      end description
+c      -----------
+c
+c      -----------
+c      Assumptions 
+c      -----------
+c      Cm244 SF neutrons in the alloy provide 100% of neutrons
+c      pyroprocessing material flow is based on R.A.Borrelli
+c      no other source than Cm244
+c      TRU+Salt mixture is homogenously distributed in crucible
+c      Assume it is an ideal mixture
+c      This allows for principle of additive volumes to compute density
+c      Cm/Pu ratio is constant
+c      hot cell is filled with inert Ar atmosphere
+c      crucible size corresponds to full batch size
+c      'top' position of crucible is same as commercial batch size
+c      this lets the crucible be 'open'
+c      -----------
+c      end assumptions
+c      -----------
+c
+c      -----------
+c      Dimensions and positions
+c      -----------
+c      crucible/commercial batch: 19.21cmR x 19.21cmH
+c      hot cell: 10mW x 10mH x 20mL
+c      equipment: 2mR x 3mH
+c      crucible is 1m off the floor
+c      equipment is 10 cm off the floor
+c      origin:(0,0,0) at center of room on the floor
+c      + x direction is right
+c      + y direction is forward
+c      + z direction is up
+c      source is volumetric isotropic cylinder source on the z axis
+c      -----------
+c      end Dimensions and positions
+c      -----------
+c
+c      -----------
+c      Facility
+c      -----------
+c      facility consists of four hot cells, all equal sized (above)
+c      source hot cell is in SE quadrant
+c      where SE quadrant is in the lower right if drawn in plan view
+c      wall shielding thickness and materials are the same
+c      -----------
+c      End facility
+c      -----------
+c      
+c      ----------------------- END MODEL NOTES -------------------------
+c
+c      -----------------------------------------------------------------
+c
+c      ------------------------- START CARDS ---------------------------
+c
+c      -----------
+c      cell cards
+c      -----------
+c
+c      ---
+c      source hot cell
+c      ---
+100    1 -1.71                -10 11 -12             imp:n=1                 $TRU+Salt-filled crucible
+c      ---
+101    2 -2.70    (10:-11)    -12 -13 14             imp:n=1                 $aluminum crucible coating
+c      ---
+102    3 -0.00178 (12:13:-14) -15 16 -17             imp:n=1                 $Ar content in equipment
+c      ---
+103    4 -7.92    (15:-16:17) -18 -19 20             imp:n=1                 $steel equipment
+c      ---
+104    3 -0.00178 (18:19:-20) -50 51 -52 53 54 -55   imp:n=1 VOL=1.96039E+09 $rest of SE hot cell
+c      ---
+c      end source hot cell
+c      ---
+c
+c      ---
+c      empty hot cells
+c      ---
+110    3 -0.00178 -52 53 54 -55 -61 70   imp:n=1 $SW hot cell 
+c      ---
+111    3 -0.00178  54 -55 -61 62 70 -72  imp:n=1 $NW hot cell
+c      ---
+112    3 -0.00178 -50 51 54 -55 62 -72   imp:n=1 $NE hot cell
+c      ---
+c      end empty hot cells
+c      ---
+c
+c      ---
+c      facility shielding (comments based on plan view)
+c      ---
+120    5 -3.10  50 -60 63 64 -65 -73   imp:n=1 $shielding right facility wall
+c      ---
+121    5 -3.10  63 64 -65 -70 71 -73   imp:n=1 $shielding left facility wall
+c      ---
+122    5 -3.10 -50 -53 63 64 -65 70    imp:n=1 $shielding back facility wall
+c      ---
+123    5 -3.10 -50 64 -65 70 72 -73    imp:n=1 $shielding front facility wall
+c      ---
+124    5 -3.10 -51 53 61 64 -65 -72    imp:n=1 $shielding middle facility wall
+c      ---
+125    5 -3.10  52 -61 -62 64 -65 70   imp:n=1 $shielding middle left facility wall
+c      ---
+126    5 -3.10 -50 51 52 -62 64 -65    imp:n=1 $shielding middle right facility wall
+c      ---
+127    5 -3.10 -50 51 -52 53 -54 64    imp:n=1 $SE source cell shielding plug
+c      ---
+128    5 -3.10 -50 51 -52 53 55 -65    imp:n=1 $SE source cell shielding cap 
+c      ---
+129    5 -3.10 -52 53 -54 -61 64 70    imp:n=1 $SW source cell shielding plug
+c      ---
+130    5 -3.10 -52 53 55 -61 -65 70    imp:n=1 $SW source cell shielding cap
+c      ---
+131    5 -3.10 -54 -61 62 64 70 -72    imp:n=1 $NW source cell shielding plug
+c      ---
+132    5 -3.10  55 -61 62 -65 70 -72   imp:n=1 $NW source cell shielding cap
+c      ---
+133    5 -3.10 -50 51 -54 62 64 -72    imp:n=1 $NE source cell shielding plug
+c      ---
+134    5 -3.10 -50 51 55 62 -65 -72    imp:n=1 $NE source cell shielding cap
+c      ---
+c      end facility shielding
+c      ---
+c
+c      ---
+150    0        60:-63:-64:65:-71:73   imp:n=0 $outside of hot cell
+c      ---
+c
+c      -----------
+c      end cell cards
+c      -----------
+
+c      -----------
+c      surface cards
+c      -----------
+c
+c      ---
+c      source geometry
+c      ---
+10     CZ  19.21        $alloy/crucible radius
+11     PZ  100          $alloy/crucible height above the floor
+12     PZ  119.21       $alloy/crucible height+floor height
+c      ---
+13     CZ  24.21        $5cm thick aluminum crucible
+14     PZ  95           $height above the floor/cathode bottom
+c      ---
+15     CZ  200          $radius of Ar content in equipment
+16     PZ  15           $bottom of Ar content in equipment
+17     PZ  305          $top of Ar content in equipment 
+c      ---
+18     CZ  205          $outer shell of equipment
+19     PZ  310          $top shell of equipment
+20     PZ  10           $bottom shell of equipment
+c      ---
+c      end source geometry
+c      ---
+c
+c      ---
+c      facility geometry (see diagram)
+c      ---
+50     PX  500          $NE/SE hot cell right wall 
+51     PX -500          $NE/SE hot cell left wall
+52     PY  1000         $NE shielding back wall/SE hot cell front wall
+53     PY -1000         $SE/SW hot cell back wall
+c      ---
+54     PZ  0            $facility floor
+55     PZ  1000         $facility ceiling
+c      ---
+60     PX  575          $NE/SE shielding right wall
+61     PX -575          $SE shielding left wall/SW hot cell right wall
+62     PY  1075         $SE/SW shielding front wall
+63     PY -1075         $SE/SW shielding back wall
+c      ---
+64     PZ -75           $facility shielding floor
+65     PZ  1075         $facility shielding ceiling
+c      ---
+70     PX -1575         $NW/SW hot cell left wall
+71     PX -1650         $NW/SW shielding left wall
+c      ---
+72     PY  3075         $NW/NE hot cell front wall
+73     PY  3150         $NW/NE shielding front wall
+c      ---
+c      end facility geometry
+c      ---
+c      -----------
+c      end surface cards
+c      -----------
+
+c      -----------
+c      data cards
+c      -----------
+c
+c      ---
+c      physics
+c      ---
+c
+c      ---
+c      MODE is for neutrons
+c      LCA card provides LAHET physics options
+c      Bertini model is not used because it is not installed on berkeleium server
+c      ---
+c
+c      ---
+MODE   n
+c      ---
+c
+c      ---
+c      end physics
+c      ---
+c
+c      ---
+c      source
+c      ---
+c
+c      ---
+SDEF   CEL 100 POS 0 0 109.605 AXS 0 0 1 RAD d1 EXT d2 ERG d3
+SI1    0 19.21                  $source radius
+SI2    9.605                    $position for the source height (+/-)
+SP3    -3 .902523 3.72033       $Cm244 SF watt spectrum
+c      ---
+c
+c      ---
+c      end source
+c      ---
+c
+c      ---
+c      tally
+c      ---
+c
+c      ---
+c      average cell flux
+c      ---
+FC54   NW hot cell
+F54:N  111
+c      ---
+c
+c      ---
+DF0    IU 2 FAC 1 LOG IC 10
+c      ---
+c
+c      ---
+c      end tally
+c      ---
+c
+c      ---
+c      materials
+c      ---
+c
+c      ---
+c      TRU+Salt mixture
+M1     3007.66c  -2.883E-03
+       17000.04p -4.918E-01 19000.66c -4.859E-01
+       39089.66c -4.032E-04 39090.70c -9.365E-08 57138.70c -8.789E-08
+       57139.70c -1.099E-03 58140.70c -1.134E-03 58142.70c -1.022E-03
+       58144.70c -4.815E-08 59141.50c -1.002E-03 60142.70c -3.420E-05
+       60143.50c -6.091E-04 60144.70c -1.284E-03 60145.50c -5.711E-04
+       60146.70c -6.607E-04 60148.50c -3.372E-04 60150.70c -1.624E-04
+       61147.50c -6.509E-06 62147.66c -1.169E-04 62148.70c -1.672E-04
+       62149.66c -3.280E-06 62150.50c -3.012E-04 62151.50c -1.081E-05
+       62152.50c -1.029E-04 62154.70c -3.688E-05 63151.66c -8.702E-07
+       63152.66c -1.082E-08 63153.66c -1.087E-04 63154.66c -2.047E-05
+       63155.66c -4.264E-06 64154.66c -2.804E-05 64155.66c -1.306E-05
+       64156.66c -9.397E-05 64157.66c -1.485E-07 64158.66c -2.443E-05
+       64160.66c -1.265E-06 65159.70c -2.699E-06 66160.70c -3.795E-07
+       66161.70c -4.220E-07 66162.70c -3.467E-07 66163.70c -3.421E-07
+       66164.70c -5.445E-08 67165.66c -1.953E-07 68166.70c -7.264E-08
+       68168.70c -1.115E-08 92234.66c -5.010E-07 92235.66c -2.008E-05
+       92236.66c -1.940E-05 92238.66c -2.893E-03 93237.66c -4.690E-04
+       94238.66c -1.843E-04 94239.66c -3.202E-03 94240.66c -1.553E-03
+       94241.66c -6.064E-04 94242.66c -5.164E-04 94244.66c -6.677E-08
+       95241.66c -3.912E-04 95242.66c -4.195E-07 95243.66c -1.361E-04
+       96243.66c -3.971E-07 96244.66c -4.283E-05 96245.66c -3.174E-06
+       96246.66c -5.516E-07 96247.66c -7.785E-09
+c      ---
+c
+c      ---
+c      aluminum
+M2     13027.66c      1
+c      ---                             
+c
+c      ---
+c      argon
+M3     18000.59c     1
+c      ---
+c
+c      ---
+c      equipment: stainless stell 316
+M4     14000.60c -0.010 
+       24000.42c -0.170 25055.66c -0.020 26000.50c -0.655 
+       28000.42c -0.120 42000.42c -0.025  
+c      ---
+c
+c      ---
+c      shielding: boron frits-baryte
+M5     1001.66c  -0.005600
+       5011.66c  -0.010400 8016.66c  -0.338000 9019.66c  -0.002300
+       11023.66c -0.012100 12000.66c -0.002300 13027.66c -0.006400
+       14000.60c -0.033100 16000.66c -0.091500 19000.66c -0.001000
+       20000.66c -0.062600 25055.66c -0.000200 26000.50c -0.021900
+       30000.42c -0.006600 56138.66c -0.401300
+c      ---
+c
+c      ---
+c      end materials
+c      ---
+c
+c      ---
+c      weight window generators
+c      ---
+WWG    54 100 0 j j j j 0
+WWP:N  5 3 5 0 0
+WWN1:N 5.0000E-01  5.5319E-01  4.8803E-01  4.8803E-01  4.8175E-01
+       6.0133E-04  3.5224E-08  2.9771E-04  2.0510E+00  3.0301E-04
+       5.1034E+00  1.7462E-04  2.1051E-01  8.1811E-05  1.8190E-01
+       1.3879E+00  4.2421E+00  1.6937E-03  2.1923E-03  5.9486E-08
+       7.2898E-08  0.0000E+00  2.5633E-04 -1.0000E+00
+c      ---
+c      output
+c      ---
+PRINT  10 30 38 40 50 110 117 118 120 126 128 160 161 162 170
+PRDMP  1000000 -10
+c      ---
+c      end output
+c      ---
+c
+c      ---
+c      particle history
+c      ---
+NPS    100000000
+c      ---
+c      end history
+c      ---
+c      -----------
+c      end data cards
+c      -----------
+c
+c      ----------- END CARDS -----------
+c
+c      -----------------------------------------------------------------
