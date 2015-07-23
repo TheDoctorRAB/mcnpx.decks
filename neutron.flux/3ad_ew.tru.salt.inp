@@ -221,19 +221,19 @@ c      ---
 54     PZ  0            $facility floor
 55     PZ  1000         $facility ceiling
 c      ---
-60     PX  575          $NE/SE shielding right wall
-61     PX -575          $SE shielding left wall/SW hot cell right wall
-62     PY  1075         $SE/SW shielding front wall
-63     PY -1075         $SE/SW shielding back wall
+60     PX  530          $NE/SE shielding right wall
+61     PX -530          $SE shielding left wall/SW hot cell right wall
+62     PY  1030         $SE/SW shielding front wall
+63     PY -1030         $SE/SW shielding back wall
 c      ---
-64     PZ -75           $facility shielding floor
-65     PZ  1075         $facility shielding ceiling
+64     PZ -30           $facility shielding floor
+65     PZ  1030         $facility shielding ceiling
 c      ---
-70     PX -1575         $NW/SW hot cell left wall
-71     PX -1650         $NW/SW shielding left wall
+70     PX -1530         $NW/SW hot cell left wall
+71     PX -1560         $NW/SW shielding left wall
 c      ---
-72     PY  3075         $NW/NE hot cell front wall
-73     PY  3150         $NW/NE shielding front wall
+72     PY  3030         $NW/NE hot cell front wall
+73     PY  3060         $NW/NE shielding front wall
 c      ---
 c      end facility geometry
 c      ---
@@ -253,6 +253,8 @@ c      ---
 c      MODE is for neutrons
 c      LCA card provides LAHET physics options
 c      Bertini model is not used because it is not installed on berkeleium server
+LCA    2 1 2 0023 1 1 0 1 0 0
+LCB    3500 3500 2500 2500 800 800 -1.0 -1.0
 c      ---
 c
 c      ---
@@ -283,13 +285,60 @@ c      tally
 c      ---
 c
 c      ---
-c      average cell flux
+c      surface flux
 c      ---
-FC54   NW hot cell
-F54:N  111
+FC2    alloy
+F2:N   10 11 12 T
+C2     0 1 T
+c
+FC12   crucible
+F12:N  13 14 T
+C12    0 1 T
+c
+FC22   equipment
+F22:N  18 19 20 T
+C22    0 1 T
+c
+FC32   SW hot cell
+F32:N  61
+FS32   -52 -62
+SD32   2.0E+06 1.5E+04 2.0E+06
+C32    0 1 T
+c
+FC42   N hot cells
+F42:N  62
+FS42   -61 -51
+SD42   1.0E+06 1.5E+04 1.0E+06
+C42    0 1 T     
 c      ---
 c
 c      ---
+c      average cell flux
+c      ---
+FC4    source 
+F4:N   100
+c
+FC14   crucible
+F14:N  101
+c
+FC24   inside equipment
+F24:N  102
+c
+FC34   outside equipment, inside SE hot cell
+F34:N  104
+c
+FC44   SW hot cell    
+F44:N  110
+c
+FC54   NW hot cell
+F54:N  111
+c
+FC64   NE hot cell
+F64:N  112
+c      ---
+c
+c      ---
+c      dose
 DF0    IU 2 FAC 1 LOG IC 10
 c      ---
 c
@@ -362,13 +411,9 @@ c
 c      ---
 c      weight window generators
 c      ---
-WWG    54 100 0 j j j j 0
-WWP:N  5 3 5 0 0
-WWN1:N 5.0000E-01  5.5319E-01  4.8803E-01  4.8803E-01  4.8175E-01
-       6.0133E-04  3.5224E-08  2.9771E-04  2.0510E+00  3.0301E-04
-       5.1034E+00  1.7462E-04  2.1051E-01  8.1811E-05  1.8190E-01
-       1.3879E+00  4.2421E+00  1.6937E-03  2.1923E-03  5.9486E-08
-       7.2898E-08  0.0000E+00  2.5633E-04 -1.0000E+00
+c      WWG    XX XXX 0 j j j j 0
+c      ---
+c
 c      ---
 c      output
 c      ---
@@ -381,7 +426,7 @@ c
 c      ---
 c      particle history
 c      ---
-NPS    100000000
+NPS    10000000
 c      ---
 c      end history
 c      ---

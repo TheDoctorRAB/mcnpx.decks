@@ -1,10 +1,10 @@
-Detection of Cm244 SF neutrons in fuel fabrication deck
+Detection of Cm244 SF neutrons in electrowinner deck
 c      -----------------------------------------------------------------
 c      R.A.Borrelli
 c      -----------------------------------------------------------------
 c      rev.12.February.2014
 c      -----------------------------------------------------------------
-c      SOURCE:20 kg batch size
+c      SOURCE:1.1 kg batch size
 c      -----------------------------------------------------------------
 c
 c      ------------------------- MODEL NOTES ---------------------------
@@ -12,8 +12,9 @@ c
 c      -----------
 c      MCNP modifications for different batch sizes
 c      -----------
-c      commercial batch size is 20 kg
-c      20 kg of alloy will completely fill the crucible
+c      commercial batch size is 1.1 kg
+c      1.1 kg of TRU+Cd (after EW) will completely fill the 
+c      crucible
 c      when changing the modeling mass (2 kg, 2 g, etc.)
 c      the following must be included
 c      
@@ -39,13 +40,15 @@ c
 c      -----------
 c      Description
 c      -----------
-c      models neutron flux in fuel fabrication hot cell
+c      models neutron flux in electrowinning machine
 c      different batch sizes are modeled
-c      neutron source is a metal fuel alloy U65-TRU20-RE5-Zr10 wt%
-c      alloy is a solid metal cylinder
-c      crucible that houses the metal alloy is a carbon coated cylinder
-c      carbon is a 5 cm thick open (top) cylinder
-c      crucible/metal alloy is 'housed' in 'equipment'
+c      neutron source is a TRU+Cd mixture
+c      U10.1-TRU24.5-Cd58.9-RE6.5 wt%
+c      alloy is a solid TRU+Cd cylinder
+c      crucible that houses the metal alloy is an aluminum coated 
+c      cylinder
+c      aluminum is a 5 cm thick open (top) cylinder
+c      crucible/TRU+Salt mixture is 'housed' in 'equipment'
 c      equipment is a 5 cm thick steel closed cylinder
 c      hot cell has 'wall thickness' for later shielding calculations
 c      shielding is 30 cm boron frits-baryte
@@ -59,13 +62,15 @@ c      -----------
 c      Assumptions 
 c      -----------
 c      Cm244 SF neutrons in the alloy provide 100% of neutrons
-c      pyroprocessing material flow is based on KAERI v2.6.4
+c      pyroprocessing material flow is based on R.A.Borrelli
 c      no other source than Cm244
-c      metal alloy is homogenously distributed in crucible
+c      TRU+Salt mixture is homogenously distributed in crucible
+c      Assume it is an ideal mixture
+c      This allows for principle of additive volumes to compute density
 c      Cm/Pu ratio is constant
 c      hot cell is filled with inert Ar atmosphere
 c      crucible size corresponds to full batch size
-c      'top' position of crucible is same as 20 kg alloy batch size
+c      'top' position of crucible is same as commercial batch size
 c      this lets the crucible be 'open'
 c      -----------
 c      end assumptions
@@ -74,7 +79,7 @@ c
 c      -----------
 c      Dimensions and positions
 c      -----------
-c      crucible/commercial batch: 7.4cmR x 7.4cmH
+c      crucible/commercial batch: 3.31cmR x 3.31cmH
 c      hot cell: 10mW x 10mH x 20mL
 c      equipment: 2mR x 3mH
 c      crucible is 1m off the floor
@@ -112,9 +117,9 @@ c
 c      ---
 c      source hot cell
 c      ---
-100    1 -15.8                -10 11 -12             imp:n=1                 $alloy-filled crucible
+100    1 -9.66                -10 11 -12             imp:n=1                 $TRU+Cd-filled crucible
 c      ---
-101    2 -2.23    (10:-11)    -12 -13 14             imp:n=1                 $carbon crucible coating
+101    2 -2.70    (10:-11)    -12 -13 14             imp:n=1                 $carbon crucible coating
 c      ---
 102    3 -0.00178 (12:13:-14) -15 16 -17             imp:n=1                 $Ar content in equipment
 c      ---
@@ -188,11 +193,11 @@ c
 c      ---
 c      source geometry
 c      ---
-10     CZ  7.39         $alloy/crucible radius
+10     CZ  3.31         $alloy/crucible radius
 11     PZ  100          $alloy/crucible height above the floor
-12     PZ  107.39       $alloy/crucible height+floor height
+12     PZ  103.31       $alloy/crucible height+floor height
 c      ---
-13     CZ  12.39        $5cm thick carbon crucible
+13     CZ  8.31        $5cm thick aluminum crucible
 14     PZ  95           $height above the floor/cathode bottom
 c      ---
 15     CZ  200          $radius of Ar content in equipment
@@ -266,9 +271,9 @@ c      source
 c      ---
 c
 c      ---
-SDEF   CEL 100 POS 0 0 103.695 AXS 0 0 1 RAD d1 EXT d2 ERG d3
-SI1    0 7.39                   $source radius
-SI2    3.695                    $position for the source height (+/-)
+SDEF   CEL 100 POS 0 0 101.655 AXS 0 0 1 RAD d1 EXT d2 ERG d3
+SI1    0 3.31                   $source radius
+SI2    1.655                    $position for the source height (+/-)
 SP3    -3 .902523 3.72033       $Cm244 SF watt spectrum
 c      ---
 c
@@ -335,6 +340,7 @@ c      ---
 c
 c      ---
 c      dose
+DF0    IU 2 FAC 1 LOG IC 10
 c      ---
 c
 c      ---
@@ -346,34 +352,34 @@ c      materials
 c      ---
 c
 c      ---
-c      alloy
-M1     39089.66c -2.264E-03 
-       39090.70c -5.257E-07 40000.66c -9.973E-02 57138.70c -4.934E-07
-       57139.70c -6.171E-03 58140.70c -6.366E-03 58142.70c -5.736E-03
-       58144.70c -2.703E-07 59141.50c -5.623E-03 60142.70c -1.920E-04
-       60143.50c -3.419E-03 60144.70c -7.208E-03 60145.50c -3.206E-03
-       60146.70c -3.709E-03 60148.50c -1.893E-03 60150.70c -9.115E-04
-       61147.50c -3.654E-05 62147.66c -6.565E-04 62148.70c -9.387E-04
-       62149.66c -1.841E-05 62150.50c -1.691E-03 62151.50c -6.068E-05
-       62152.50c -5.778E-04 62154.70c -2.070E-04 63151.66c -4.885E-06
-       63152.66c -6.074E-08 63153.66c -6.104E-04 63154.66c -1.149E-04
-       63155.66c -2.394E-05 64154.66c -1.574E-04 64155.66c -7.329E-05 
-       64156.66c -5.275E-04 64157.66c -8.335E-07 64158.66c -1.371E-04
-       64160.66c -7.104E-06 65159.70c -1.515E-05 66160.70c -2.130E-06
-       66161.70c -2.369E-06 66162.70c -1.946E-06 66163.70c -1.921E-06
-       66164.70c -3.057E-07 67165.66c -1.096E-06 68166.70c -4.078E-07
-       68168.70c -6.257E-08 92234.66c -1.107E-04 92235.66c -4.438E-03
-       92236.66c -4.287E-03 92238.66c -6.394E-01 93237.66c -1.317E-02
-       94238.66c -5.173E-03 94239.66c -8.987E-02 94240.66c -4.360E-02
-       94241.66c -1.702E-02 94242.66c -1.450E-02 94244.66c -1.874E-06
-       95241.66c -1.098E-02 95242.66c -1.178E-05 95243.66c -3.820E-03
-       96243.66c -1.115E-05 96244.66c -1.202E-03 96245.66c -8.910E-05
-       96246.66c -1.548E-05 96247.66c -2.185E-07
+c      TRU+Cd mixture
+M1     39089.66c -2.784E-03
+       39090.70c -6.464E-07 48000.50c -5.889E-01 57138.70c -6.067E-07
+       57139.70c -7.588E-03 58140.70c -7.828E-03 58142.70c -7.053E-03
+       58144.70c -3.324E-07 59141.50c -6.914E-03 60142.70c -2.360E-04
+       60143.50c -4.205E-03 60144.70c -8.863E-03 60145.50c -3.942E-03
+       60146.70c -4.561E-03 60148.50c -2.328E-03 60150.70c -1.121E-03
+       61147.50c -4.493E-05 62147.66c -8.072E-04 62148.70c -1.154E-03
+       62149.66c -2.264E-05 62150.50c -2.079E-03 62151.50c -7.461E-05
+       62152.50c -7.105E-04 62154.70c -2.546E-04 63151.66c -6.007E-06
+       63152.66c -7.469E-08 63153.66c -7.506E-04 63154.66c -1.413E-04
+       63155.66c -2.944E-05 64154.66c -1.936E-04 64155.66c -9.012E-05
+       64156.66c -6.487E-04 64157.66c -1.025E-06 64158.66c -1.686E-04
+       64160.66c -8.735E-06 65159.70c -1.863E-05 66160.70c -2.619E-06
+       66161.70c -2.913E-06 66162.70c -2.393E-06 66163.70c -2.362E-06
+       66164.70c -3.759E-07 67165.66c -1.348E-06 68166.70c -5.014E-07
+       68168.70c -7.693E-08 92234.66c -1.729E-05 92235.66c -6.931E-04
+       92236.66c -6.695E-04 92238.66c -9.986E-02 93237.66c -1.619E-02
+       94238.66c -6.361E-03 94239.66c -1.105E-01 94240.66c -5.361E-02
+       94241.66c -2.093E-02 94242.66c -1.782E-02 94244.66c -2.305E-06
+       95241.66c -1.350E-02 95242.66c -1.448E-05 95243.66c -4.697E-03
+       96243.66c -1.370E-05 96244.66c -1.478E-03 96245.66c -1.096E-04
+       96246.66c -1.904E-05 96247.66c -2.687E-07
 c      ---
 c
 c      ---
-c      carbon
-M2     6000.66c      1
+c      aluminum
+M2     13027.66c      1
 c      ---                             
 c
 c      ---
@@ -424,10 +430,13 @@ NPS    100000
 c      ---
 c      end history
 c      ---
+c
+c      ---
+c      DBCN   19073486328125 j j j j j j j j j j j 352879 19073486328125
+c      ---
 c      -----------
 c      end data cards
 c      -----------
-c
 c      ----------- END CARDS -----------
 c
 c      -----------------------------------------------------------------

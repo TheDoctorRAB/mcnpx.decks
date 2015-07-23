@@ -251,6 +251,8 @@ c      ---
 c      MODE is for neutrons
 c      LCA card provides LAHET physics options
 c      Bertini model is not used because it is not installed on berkeleium server
+LCA    2 1 2 0023 1 1 0 1 0 0
+LCB    3500 3500 2500 2500 800 800 -1.0 -1.0
 c      ---
 c
 c      ---
@@ -411,9 +413,16 @@ c      end materials
 c      ---
 c
 c      ---
+c      weight window generators
+c      ---
+c      WWG    XX XXX 0 j j j j 0
+c      ---
+c
+c      ---
 c      output
 c      ---
 PRINT  10 30 38 40 50 110 117 118 120 126 128 160 161 162 170
+PRDMP  1000000 -10
 c      ---
 c      end output
 c      ---
