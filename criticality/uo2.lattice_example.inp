@@ -1,14 +1,14 @@
-Burnup uranium oxide LWR fuel
+Uranium oxide lattice 3% 
 c      -----------------------------------------------------------------
 c      R.A.Borrelli
 c      -----------------------------------------------------------------
-c      rev.21.Aug.15
+c      rev.27.Aug.15
 c      -----------------------------------------------------------------
 c
 c      ------------------------- MODEL NOTES ---------------------------
 c
 c      -----------
-c      Burnup test for a typical LWR fuel rod
+c      This is an example of a lattice for the burnup test for a typical LWR fuel rod
 c      
 c      Geometry is the classic unit cell for a single fuel rod
 c
@@ -57,35 +57,33 @@ c
 c      ---
 c      unit cell
 c      ---
-100    1 -10.97                     -10 11 -12             u=1    imp:n,p=1                 $fuel
+100    1 -10.97                     -10 11 -12       u=1    imp:n,p=1                 $fuel
 c      ---
-101    2 -0.0001785 (10:-11:12)      11 -12 -13            u=1    imp:n,p=1                 $gap
+101    2 -0.0001785 (10:-11:12)      11 -12 -13      u=1    imp:n,p=1                 $gap
 c      ---
-102    3 -6.506     (-11:12:13)      11 -12 -14            u=1    imp:n,p=1                 $cladding
+102    3 -6.506     (-11:12:13)      11 -12 -14      u=1    imp:n,p=1                 $cladding
 c      ---
-103    4 -0.7295    (-11:12:14)                            u=1    imp:n,p=1                 $moderator 
+103    4 -0.7295    (-11:12:14)                      u=1    imp:n,p=1                 $moderator 
 c      ---
-104    0                            -50 51 -52 53 -54 55   fill=1 imp:n,p=1                 $unit cell
+104    0             -50 51 -52 53   lat=1 fill=1 u=2 imp:n,p=1                       $lattice unit cell
 c      ---
 c      end unit cell
 c      ---
 c
 c      ---
-c      repeat unit cells
+c      window surface
 c      ---
-105    like 104 but trcl (0 1.254 0)
-106    like 104 but trcl (1.254 0 0)
-107    like 104 but trcl (1.254 1.254 0)
+200    0                   60 -61 -62 63 -64 65 fill=2 imp:n,p=1               $lattice window 
 c      ---
 c
 c      ---
 c      infinite medium
 c      ---
-200    4 -0.7295           60 -61 -62 63 -64 65 #104 #105 #106 #107 imp:n,p=1               $infinite medium
+300    4 -0.7295           70 -71 72 -73 74 -75 #200   imp:n,p=1               $infinite medium
 c      ---
 c
 c      ---
-999    0                  -60:61:62:-63:64:-65                      imp:n,p=0               $void
+999    0                  -70:71:-72:73:-74:75         imp:n,p=0               $void
 c      ---
 c
 c      -----------
@@ -124,8 +122,8 @@ c      ---
 51     PX -0.6270        $left edge of cell
 52     PY  0.6270        $front edge of cell
 53     PY -0.6270        $back edge of cell
-54     PZ  200.6270      $top cap of cell
-55     PZ -200.6270      $bottom cap of cell
+54     PZ  200           $top of cell
+55     PZ -200           $bottom of cell
 c      ---
 c
 c      ---
@@ -133,13 +131,25 @@ c      end unit cell geometry
 c      ---
 c
 c      ---
+c      window
+c      --- 
+60     PX -20.691
+61     PX  19.437 
+62     PY  3.1350
+63     PY -36.975
+64     PZ  200
+65     PZ -200
+c      ---
+c
+c      ---
 c      infinite medium
-60     PX -1000
-61     PX  1000
-62     PY  1000
-63     PY -1000
-64     PZ  1000
-65     PZ -1000
+c      ---
+70     PX -1000
+71     PX  1000
+72     PY -1000
+73     PY  1000
+74     PZ -1000
+75     PZ  1000
 c      ---
 c
 c      -----------
