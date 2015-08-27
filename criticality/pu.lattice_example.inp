@@ -76,21 +76,16 @@ c      ---
 105    like 104 but trcl (0 1.254 0)
 106    like 104 but trcl (1.254 0 0)
 107    like 104 but trcl (1.254 1.254 0)
-108    like 104 but trcl (0 -1.254 0)
-109    like 104 but trcl (1.254 -1.254 0)
-110    like 104 but trcl (0 2.508 0)
-111    like 104 but trcl (1.254 2.508 0)
 c      ---
 c
 c      ---
 c      infinite medium
 c      ---
-200    4 -0.7295 60 -61 -62 63 -64 65 
-       #104 #105 #106 #107 #108 #109 #110 #111 imp:n,p=1               $infinite medium
+200    4 -0.7295           60 -61 -62 63 -64 65 #104 #105 #106 #107 imp:n,p=1               $infinite medium
 c      ---
 c
 c      ---
-999    0        -60:61:62:-63:64:-65                      imp:n,p=0               $void
+999    0                  -60:61:62:-63:64:-65                      imp:n,p=0               $void
 c      ---
 c
 c      -----------
