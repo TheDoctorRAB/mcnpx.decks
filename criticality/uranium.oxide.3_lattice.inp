@@ -57,7 +57,7 @@ c
 c      ---
 c      unit cell
 c      ---
-100    1 -10.97     -10 11 -12       u=1    VOL=210.726 imp:n,p=1     $fuel
+100    1 -10.97     -10 11 -12       u=1    VOL=210.726 imp:n,p=1                     $fuel
 c      ---
 101    2 -0.0001785 (10:-11:12)      11 -12 -13      u=1    imp:n,p=1                 $gap
 c      ---
@@ -65,7 +65,7 @@ c      ---
 c      ---
 103    4 -0.7295    (-11:12:14)                      u=1    imp:n,p=1                 $moderator 
 c      ---
-104    0             -50 51 -52 53   lat=1 fill=1 u=2 imp:n,p=1                       $lattice unit cell
+104    0            -50 51 -52 53 11 -12   lat=1 fill=1 u=2 imp:n,p=1                 $lattice unit cell
 c      ---
 c      end unit cell
 c      ---
@@ -73,7 +73,7 @@ c
 c      ---
 c      window surface
 c      ---
-200    0                   60 -61 -62 63 fill=2 imp:n,p=1               $lattice window 
+200    0                   60 -61 -62 63 11 -12 fill=2 imp:n,p=1               $lattice window 
 c      ---
 c
 c      ---
@@ -101,8 +101,8 @@ c
 c      ---
 c      fuel
 10     CZ  0.4095        $fuel radius
-11     PZ  -200          $fuel bottom
-12     PZ  200           $fuel top
+11     PZ -200           $fuel/unit cell bottom
+12     PZ  200           $fuel/unit cell top
 c      ---
 c
 c      ---
@@ -122,8 +122,6 @@ c      ---
 51     PX -0.6270        $left edge of cell
 52     PY  0.6270        $front edge of cell
 53     PY -0.6270        $back edge of cell
-54     PZ  200           $top of cell
-55     PZ -200           $bottom of cell
 c      ---
 c
 c      ---
