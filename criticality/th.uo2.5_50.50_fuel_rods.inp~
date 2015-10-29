@@ -1,9 +1,9 @@
-Uranium oxide lattice
+Thorium-Uranium oxide lattice
 c      -----------------------------------------------------------------
 c      R.A.Borrelli
 c      @TheDoctorRAB
 c      -----------------------------------------------------------------
-c      rev.25.Aug.15
+c      rev.28.Oct.15
 c      -----------------------------------------------------------------
 c
 c      ------------------------- MODEL NOTES ---------------------------
@@ -14,7 +14,7 @@ c
 c      Geometry is the classic unit cell for a single fuel rod
 c
 c      
-c      (1) cylinder of UO2 fuel with 4.095 mm radius
+c      (1) cylinder of Th-UO2 fuel with 4.095 mm radius
 c      (2) cylinder of He filled gap with 4.177 mm radius
 c      (3) cylinder of Zr cladding with 4.75 mm radius
 c      (4) box of H2O moderator with 12.54 mm on a side; i.e., pitch
@@ -26,7 +26,7 @@ c      -----------
 c      assumptions
 c      -----------
 c
-c      (1) fuel is U235,U238,O
+c      (1) fuel is U235,Th232,O
 c      (2) typical PWR 50000 fuel rods
 c      (3) typical PWR 3000 MWth
 c      (4) 5% scale model 50 x 50 'rods' based on 50000 core
