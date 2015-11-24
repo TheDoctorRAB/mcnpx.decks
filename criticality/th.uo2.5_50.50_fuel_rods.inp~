@@ -42,6 +42,8 @@ c      mass U: 238.02891
 c      mass O: 15.99491461956 
 c      density (theoretical) UO2: 10.97 g/cc
 c
+c      
+c
 c      density He: 0.0001785 g/cc
 c      density Zr: 6.506 g/cc
 c
@@ -1044,7 +1046,7 @@ BURN   TIME=50 50 50 50 50 50 50 50 50 50 $500 days
        MAT=1
        OMIT=1 4 6014 7016 8018 9018       
        BOPT=1.0 24       
-       MATVOL=526815
+       MATVOL=526815 $total volume of all fissionable material
 c      ---
 c
 c      ---
