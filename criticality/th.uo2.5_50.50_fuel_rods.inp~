@@ -3,7 +3,7 @@ c      -----------------------------------------------------------------
 c      R.A.Borrelli
 c      @TheDoctorRAB
 c      -----------------------------------------------------------------
-c      rev.28.Oct.15
+c      rev.01.Dec.15
 c      -----------------------------------------------------------------
 c
 c      ------------------------- MODEL NOTES ---------------------------
@@ -38,15 +38,12 @@ c      -----------
 c      data
 c      -----------
 c
-c      mass U: 238.02891
-c      mass O: 15.99491461956 
-c      density (theoretical) UO2: 10.97 g/cc
-c
-c      
-c
+c      mass U: 235.0439299
+c      mass Th: 232.0380553
+c      mass O: 15.9949146 
+c      density (theoretical) Th-UO2: 10.04 g/cc
 c      density He: 0.0001785 g/cc
 c      density Zr: 6.506 g/cc
-c
 c      density coolant: 0.7295 g/cc
 c
 c      origin (000) is bottom left rod in the grid
@@ -66,7 +63,7 @@ c
 c      ---
 c      unit cell
 c      ---
-100    1 -10.97     -10 11 -12       u=1    VOL=210.726 imp:n,p=1     $fuel
+100    1 -10.04     -10 11 -12       u=1    VOL=210.726 imp:n,p=1     $fuel
 c      ---
 101    2 -0.0001785 (10:-11:12)      11 -12 -13      u=1    imp:n,p=1 $gap
 c      ---
@@ -1065,10 +1062,10 @@ c      materials
 c      ---
 c
 c      ---
-c      5% enriched UO2 fuel 
-M1     8016.74c  -0.118472
-       92235.69c -0.044076 
-       92238.69c -0.837450
+c      5% enriched Th-UO2 fuel 
+M1     8016.74c  -0.121092
+       92235.69c -0.044486 
+       90232.66c -0.834422
 c      ---
 c
 c      ---
