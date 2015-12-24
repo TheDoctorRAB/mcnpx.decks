@@ -63,5 +63,5 @@ target/
 *.py~
 *.md~
 .gitignore~
-*.png
 *.o
+*.inp~
