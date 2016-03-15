@@ -1,0 +1,21 @@
+#!/bin/bash
+python mcnpx_burn.card.py fuel.oxide_th0.inp.o
+python mcnpx_burn.card.py fuel.oxide_th5.inp.o
+python mcnpx_burn.card.py fuel.oxide_th10.inp.o
+python mcnpx_burn.card.py fuel.oxide_th15.inp.o
+python mcnpx_burn.card.py fuel.oxide_th20.inp.o
+python mcnpx_burn.card.py fuel.oxide_th25.inp.o
+python mcnpx_burn.card.py fuel.oxide_th30.inp.o
+python mcnpx_burn.card.py fuel.oxide_th35.inp.o
+python mcnpx_burn.card.py fuel.oxide_th40.inp.o
+python mcnpx_burn.card.py fuel.oxide_th45.inp.o
+python mcnpx_burn.card.py fuel.oxide_th50.inp.o
+python mcnpx_burn.card.py fuel.oxide_th55.inp.o
+python mcnpx_burn.card.py fuel.oxide_th60.inp.o
+python mcnpx_burn.card.py fuel.oxide_th65.inp.o
+python mcnpx_burn.card.py fuel.oxide_th70.inp.o
+python mcnpx_burn.card.py fuel.oxide_th75.inp.o
+python mcnpx_burn.card.py fuel.oxide_th80.inp.o
+python mcnpx_burn.card.py fuel.oxide_th85.inp.o
+python mcnpx_burn.card.py fuel.oxide_th90.inp.o
+python mcnpx_burn.card.py fuel.oxide_th95.inp.o
