@@ -1,0 +1,208 @@
+Burnup uranium oxide LWR fuel
+c      -----------------------------------------------------------------
+c      R.A.Borrelli
+c      -----------------------------------------------------------------
+c      rev.21.Aug.15
+c      -----------------------------------------------------------------
+c
+c      ------------------------- MODEL NOTES ---------------------------
+c
+c      -----------
+c      Burnup test for a typical LWR fuel rod
+c      
+c      Geometry is the classic unit cell for a single fuel rod
+c
+c      (1) cylinder of UO2 fuel with 4.095 mm radius
+c      (2) cylinder of He filled gap with 4.177 mm radius
+c      (3) cylinder of Zr cladding with 4.75 mm radius
+c      (4) box of H2O moderator with 12.54 on a side; i.e., pitch
+c      (5) all 400 cm long
+c
+c      -----------
+c
+c      -----------
+c      assumptions
+c      -----------
+c
+c      (1) fuel is U235,U238,O
+c
+c      -----------
+c
+c      -----------
+c      data
+c      -----------
+c
+c      mass U: 238.02891
+c      mass O: 15.99491461956 
+c      density UO2: 10.97 g/cc
+c
+c      density He: 0.0001785 g/cc
+c      density Zr: 6.506 g/cc
+c
+c      origin is dead center
+c      -----------
+c      
+c      ----------------------- END MODEL NOTES -------------------------
+c
+c      -----------------------------------------------------------------
+c
+c      ------------------------- START CARDS ---------------------------
+c
+c      -----------
+c      cell cards
+c      -----------
+c
+c      ---
+c      unit cell
+c      ---
+100    1 -10.97                     -10 11 -12             imp:n,p=1                 $fuel
+c      ---
+101    2 -0.0001785 (10:-11:12)      11 -12 -13            imp:n,p=1                 $gap
+c      ---
+102    3 -6.506     (-11:12:13)      11 -12 -14            imp:n,p=1                 $cladding
+c      ---
+103    4 -0.7295    (-11:12:14)     -50 51 -52 53 -54 55   imp:n,p=1                 $moderator
+c      ---
+c      end unit cell
+c      ---
+c
+c      ---
+999    0                             50:-51:52:-53:54:-55  imp:n,p=0                 $void
+c      ---
+c
+c      -----------
+c      end cell cards
+c      -----------
+
+c      -----------
+c      surface cards
+c      -----------
+c
+c      ---
+c      unit cell geometry
+c      ---
+c
+c      ---
+c      fuel
+10     CZ  0.4095        $fuel radius
+11     PZ  -200          $fuel bottom
+12     PZ  200           $fuel top
+c      ---
+c
+c      ---
+c      gap
+13     CZ  0.4177        $gap radius
+c      ---
+c
+c      ---
+c      cladding
+14     CZ  0.4750        $cladding radius
+c      ---
+c
+c      ---
+c      moderator 
+c      ---
+50     PX  0.6270        $right edge of cell 
+51     PX -0.6270        $left edge of cell
+52     PY  0.6270        $front edge of cell
+53     PY -0.6270        $back edge of cell
+54     PZ  200.6270      $top cap of cell
+55     PZ -200.6270      $bottom cap of cell
+c      ---
+c
+c      ---
+c      end unit cell geometry 
+c      ---
+c
+c      -----------
+c      end surface cards
+c      -----------
+
+c      -----------
+c      data cards
+c      -----------
+c
+c      ---
+c      physics
+c      ---
+c
+c      ---
+c      MODE is for neutrons,photons
+c      ---
+c
+c      ---
+MODE   N P
+c      ---
+c
+c      ---
+c      end physics
+c      ---
+c
+c      ---
+c      source
+c      ---
+c
+c      ---
+KCODE  1000 1.0 10 100
+KSRC   0 0 0
+c      ---
+c
+c      ---
+c      end source
+c      ---
+c
+c      dose
+c      ---
+c
+c      ---
+c      end tally
+c      ---
+c
+c      ---
+c      materials
+c      ---
+c
+c      ---
+c      3% enriched UO2 fuel 
+M1     8016.66c  -0.118472
+       92235.66c -0.026446
+       92238.66c -0.855081 
+c      ---
+c
+c      ---
+c      gap: helium 
+M2     2004.66c   -1
+c      ---                             
+c
+c      ---
+c      cladding: zirconium 
+M3     40000.66c  -1
+c      ---
+c
+c      ---
+c      moderator: light water 
+M4     1001.66c  -0.111894
+       8016.66c  -0.888106
+MT4    LWTR.62T
+c      ---
+c
+c      ---
+c      end materials
+c      ---
+c
+c      ---
+c      output
+c      ---
+c      PRINT  10 30 38 40 50 55 110 118 120 126 128 160 161 162 170 210 220 
+PRDMP  2j 1
+c      ---
+c      end output
+c      ---
+c
+c      -----------
+c      end data cards
+c      -----------
+c
+c      ----------- END CARDS -----------
+c
+c      -----------------------------------------------------------------
