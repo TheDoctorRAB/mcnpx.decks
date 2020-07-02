@@ -7,7 +7,6 @@ c      -----------------------------------------------------------------
 c
 c      ------------------------- MODEL NOTES ---------------------------
 c
-c      This is an example for a criticality model to be applied to FOM.
 c      The origin is 000.
 c      
 c      ----------------------- END MODEL NOTES -------------------------
@@ -26,7 +25,7 @@ c      ---
 c      ---
 c
 c      ---
-150    0                   11       imp:n=0        $void
+150    0               11       imp:n=0       $void
 c      ---
 c
 c      -----------
