@@ -22,10 +22,9 @@ c
 c      ---
 100    1 -19.86       -10       imp:n=1       $plutonium sphere
 c      ---
-c      ---
 c
 c      ---
-150    0               11       imp:n=0       $void
+150    0               10       imp:n=0       $void
 c      ---
 c
 c      -----------
